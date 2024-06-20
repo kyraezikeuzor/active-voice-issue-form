@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import Link from 'next/link'
 import { Control, useForm, useFieldArray, useWatch} from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
@@ -192,7 +193,7 @@ export default function SubmissionPage() {
                     <br/><br/>
                     <b>Our Issue #3 reading period closes on Sunday, February 11 at 11:59 EST.</b> Please contact activevoicemag@gmail.com with any questions or concerns, or visit our FAQ page at activevoicemag.com/about.
                     <br/><br/>
-                    Interested in joining the Active Voice team? Apply HERE.
+                    Interested in joining the Active Voice team? Apply <b><Link href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>HERE</Link></b>.
                 </p>
             </section>
             <section className='w-full flex flex-col gap-5'>
