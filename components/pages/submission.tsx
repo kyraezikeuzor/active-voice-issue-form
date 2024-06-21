@@ -147,7 +147,7 @@ export default function SubmissionPage() {
                 highSchool: applicantData.highSchool,
                 title: submission.title,
                 text: submission.text,
-                issue: "current_issue", // replace with actual issue info
+                issue: "Issue 4", // replace with actual issue info
                 submissionType: submission.type,
                 archive: false
             }
@@ -185,19 +185,19 @@ export default function SubmissionPage() {
     return (
         <section className='w-full flex flex-col gap-10'>
             <section className='w-full flex flex-col gap-5'>
-                <h1 className='font-bold text-xl lg:text-3xl'><i>Active Voice</i> Issue Submissions</h1>
-                <p>
+                <h1 className='ft-cooper font-bold text-xl lg:text-4xl'>Active Voice Issue Submissions</h1>
+                <p className='text-base'>
                     In our third issue, Active Voice is looking for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
                     <br/><br/>
                     We will consider a maximum of three (3) pieces per person. Simultaneous submissions, as well as pieces that have been published elsewhere, are accepted. Though we would love to share as many youth voices as possible, please note that publication in Active Voice is a selective process (this should not stop you from submitting!).
                     <br/><br/>
                     <b>Our Issue #3 reading period closes on Sunday, February 11 at 11:59 EST.</b> Please contact activevoicemag@gmail.com with any questions or concerns, or visit our FAQ page at activevoicemag.com/about.
                     <br/><br/>
-                    Interested in joining the Active Voice team? Apply <b><Link href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>HERE</Link></b>.
+                    Interested in joining the Active Voice team? Apply <u><b><Link href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>here</Link></b></u>.
                 </p>
             </section>
             <section className='w-full flex flex-col gap-5'>
-                <h1 className='font-bold text-lg lg:text-2xl'>Applicant Information</h1>
+                <h1 className='ft-cooper font-bold text-lg lg:text-3xl'>Applicant Information</h1>
                 <Form {...applicantInfoForm} >
                     <form className='space-y-4'>
                         <FormField
@@ -274,7 +274,7 @@ export default function SubmissionPage() {
                 </Form>
             </section>
             <section className='w-full flex flex-col gap-8'>
-                <h1 className='font-bold text-lg lg:text-2xl'>Entry Submission(s)</h1>
+                <h1 className='ft-cooper font-bold text-lg lg:text-3xl'>Work Submission(s)</h1>
                 <Form {...submissionForm} >
                     <form className="space-y-20" onSubmit={()=>console.log('BOOG')}>
                         {fields.map((submission,index)=>(
@@ -302,7 +302,7 @@ export default function SubmissionPage() {
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue required {...submissionForm.register(`submission.${index}.type`)} placeholder="Select an entry type for your submision." />
+                                                    <SelectValue required {...submissionForm.register(`submission.${index}.type`)} placeholder="Select an entry type for your submission" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
