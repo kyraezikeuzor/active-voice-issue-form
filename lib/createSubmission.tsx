@@ -19,7 +19,7 @@ export const createSubmission = async (entry:SubmissionDto) => {
         high_school: entry.highSchool,
         title: entry.title,
         text: entry.text,
-        issue: entry.issue,
+        issue_id: entry.issueId,
         submission_type: entry.submissionType,
         archive: false
     });

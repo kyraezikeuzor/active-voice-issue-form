@@ -1,6 +1,7 @@
 'use client'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Link from 'next/link'
+import { Issue } from '@/types'
 import { Control, useForm, useFieldArray, useWatch} from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
@@ -44,7 +45,7 @@ import toast, { Toaster } from "react-hot-toast";
 import TipTap from '@/components/editor/tiptap'
 import createSubmission from '@/lib/createSubmission'
 import { categories } from '@/data/categories'
-import { contests } from '@/data/contests'
+import getActiveIssues from '@/lib/getActiveIssues'
 import { hasEmptyValues } from '@/lib/utils'
 
 type SubmissionFormValues = {
@@ -58,6 +59,18 @@ type SubmissionFormValues = {
 export default function SubmissionPage() {
 
     const router = useRouter()
+    const [contests, setContests] = useState<Issue[]>([])
+
+    useEffect(()=>{
+        const handleGetContests = async () => {
+            const data = await getActiveIssues()
+            if (data) {
+                setContests(data)
+            }
+        }
+
+        handleGetContests()
+    })
 
     // APPLICANT INFO FORM
     const applicantInfoFormSchema = z.object({
@@ -188,7 +201,7 @@ export default function SubmissionPage() {
                 highSchool: applicantData.highSchool,
                 title: submission.title,
                 text: submission.text,
-                issue: applicantData.competition, // replace with actual issue info
+                issueId: Number(applicantData.competition), // replace with actual issue info
                 submissionType: submission.type,
                 archive: false
             }
@@ -198,7 +211,7 @@ export default function SubmissionPage() {
                 
             } else {
                 router.push('/submitted')
-                toast.success("Successfully submitted entries!");
+                toast.success(`Successfully submitted entries!`);
             }
         }
     }
@@ -216,7 +229,7 @@ export default function SubmissionPage() {
     return (
         <section className='w-full flex flex-col gap-10'>
             <section className='w-full flex flex-col gap-5'>
-                <h1 className='ft-cooper font-bold text-xl lg:text-4xl'>Active Voice Submission Form</h1>
+                <h1 className='ft-cooper font-bold text-2xl md:text-3xl 2xl:text-4xl'>Active Voice Submission Form</h1>
                 <p className='text-base'>
                     In our third issue, Active Voice is looking for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
                     <br/><br/>
@@ -228,7 +241,7 @@ export default function SubmissionPage() {
                 </p>
             </section>
             <section className='w-full flex flex-col gap-5'>
-                <h1 className='ft-cooper font-bold text-lg lg:text-3xl'>Applicant Information</h1>
+                <h2 className='ft-cooper font-bold text-xl md:text-2xl 2xl:text-3xl'>Applicant Information</h2>
                 <Form {...applicantInfoForm} >
                     <form className='space-y-4'>
                         <FormField
@@ -240,12 +253,14 @@ export default function SubmissionPage() {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue {...field} placeholder="Select a contest for your submission(s)" />
+                                            <SelectValue {...field} placeholder="Select a current contest for your submission(s)" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {contests.map((item,index)=>(
-                                            <SelectItem key={index} value={item}>{item}</SelectItem>
+                                        {contests?.map((item,index)=>(
+                                            <SelectItem key={index} value={item.id.toString()}>
+                                                <span>{item.title}</span>
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -328,7 +343,7 @@ export default function SubmissionPage() {
                 </Form>
             </section>
             <section className='w-full flex flex-col gap-8'>
-                <h1 className='ft-cooper font-bold text-lg lg:text-3xl'>Work Submission(s)</h1>
+                <h2 className='ft-cooper font-bold text-xl md:text-2xl 2xl:text-3xl'>Work Submission(s)</h2>
                 <Form {...submissionForm} >
                     <form className="space-y-20">
                         {fields.map((submission,index)=>(

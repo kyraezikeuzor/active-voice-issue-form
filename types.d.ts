@@ -8,6 +8,15 @@ type SubmissionDto = {
     highSchool:string,
     title:string,
     text:string,
-    issue:string,
+    issueId:number,
     submissionType:string
+}
+
+type Issue = {
+    id:number,
+    title:string,
+    description:string,
+    startDate:any,
+    endDate:any,
+    active:boolean,
 }

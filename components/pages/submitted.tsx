@@ -23,7 +23,7 @@ export default function SubmittedPage() {
 
     return (
         <section className='flex flex-col py-[5vh]'>
-            <h1 className='ft-cooper font-bold text-lg lg:text-4xl'>Your work has been submitted!</h1>
+            <h1 className='ft-cooper font-bold text-2xl md:text-3xl 2xl:text-4xl'>Your work has been submitted!</h1>
             <br/>
             <span className='text-lg lg:text-xl'>Thank you for submitting to Active Voice Magazine 2024.</span>
             <p>
