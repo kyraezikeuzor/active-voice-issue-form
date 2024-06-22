@@ -141,10 +141,6 @@ export default function SubmissionPage() {
         } else {
             toast.error('You can only add up to 3 submissions.');
         }
-
-        if (fields.length = 0) {
-            toast.error('You must add a submission.');
-        }
     };
 
     const handleTipTapChange = (index: number, newRichText: string) => {
