@@ -22,12 +22,19 @@ export default function SubmittedPage() {
     }, []);
 
     return (
-        <section className='flex flex-col '>
-            <h1 className='font-bold text-lg lg:text-2xl'>Entry submitted!</h1>
+        <section className='flex flex-col py-[5vh]'>
+            <h1 className='ft-cooper font-bold text-lg lg:text-4xl'>Your work has been submitted!</h1>
             <br/>
+            <span className='text-lg lg:text-xl'>Thank you for submitting to Active Voice Magazine 2024.</span>
+            <p>
+                If you have not already submitted 3 entries, feel free to <u><b><Link href='/'>submit another entry</Link></b></u>.
+            </p>
+        
             <br/>
-            <span className='text-base lg:text-xl'>Thank you for submitting to Active Voice Magazine 2024.</span>
-            <p>If you have not already submitted 3 enties, feel free to <b><Link href='/'>submit another entry</Link></b>.</p>
+            <p>
+                Issue #3 results and selections will be released via email towards the end of the summer. 
+                Please contact <u>activevoicemag@gmail.com</u> with any questions or concerns, or <u><b><Link target='_blank' href='/activevoicemag.com/about'>visit</Link></b></u> our FAQ page.
+            </p>
         </section>
     )
 }

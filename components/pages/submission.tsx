@@ -40,11 +40,12 @@ import {
   } from "@/components/ui/select"
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ToastAction } from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
+import toast, { Toaster } from "react-hot-toast";
 import TipTap from '@/components/editor/tiptap'
 import createSubmission from '@/lib/createSubmission'
 import { categories } from '@/data/categories'
+import { contests } from '@/data/contests'
+import { hasEmptyValues } from '@/lib/utils'
 
 type SubmissionFormValues = {
     submission: {
@@ -56,11 +57,15 @@ type SubmissionFormValues = {
 
 export default function SubmissionPage() {
 
-    const { toast } = useToast()
     const router = useRouter()
 
     // APPLICANT INFO FORM
     const applicantInfoFormSchema = z.object({
+        competition: z.string({
+            required_error: "Please enter a competition.",
+        })
+        .min(1,{message: 'Entering a high school is required'})
+        .max(500, {message: 'High Schools must be 500 characters or less.'}),
         name: z
         .string({
             required_error: "Please enter a name.",
@@ -94,6 +99,7 @@ export default function SubmissionPage() {
         resolver: zodResolver(applicantInfoFormSchema),
         mode: 'onChange',
         defaultValues: {
+            competition:'',
             name: '',
             email: '',
             bio: '',
@@ -120,14 +126,11 @@ export default function SubmissionPage() {
         if (fields.length < 3) {
             append({ title: '', type: '', text: '' });
         } else {
-            alert('You can only add up to 3 submissions.');
-            toast({
-                title: "Over Max Submissions",
-                description: "You can only add up to 3 submissions",
-                action: (
-                  <ToastAction altText="More than 3 submissions">Undo</ToastAction>
-                ),
-            })
+            toast.error('You can only add up to 3 submissions.');
+        }
+
+        if (fields.length = 0) {
+            toast.error('You must add a submission.');
         }
     };
 
@@ -138,6 +141,44 @@ export default function SubmissionPage() {
 
     // COMPLETE FORM SUBMISSION
     const handleSubmit = async (applicantData: z.infer<typeof applicantInfoFormSchema>, submissionData: SubmissionFormValues) => {
+        // Check if any applicantData values are empty
+
+        
+        // Check if any submissionData values are empty
+
+        if (submissionData.submission.length != 0) {
+            for (const submission of submissionData.submission) {
+                let counter = 0
+                if (hasEmptyValues(applicantData)) {
+                    // Display an error message or handle the empty values case
+                    toast.error('Please fill in all applicant fields.');
+                    counter = counter+1
+                } 
+    
+                if (hasEmptyValues(submission)) {
+                    toast.error('Please fill in all submission fields.');
+                    counter = counter+1
+                }
+    
+                if (counter > 0) {
+                    return; // Prevent further execution
+                }
+            }
+        } else {
+            let counter = 0
+            if (hasEmptyValues(applicantData)) {
+                // Display an error message or handle the empty values case
+                toast.error('Please fill in all applicant fields.');
+                counter = counter+1
+            } 
+
+            toast.error('Please add a submission.');
+            if (counter > 0) {
+                return; // Prevent further execution
+            }
+        }
+        
+        
         for (const submission of submissionData.submission) {
             const entry = {
                 name: applicantData.name,
@@ -147,27 +188,17 @@ export default function SubmissionPage() {
                 highSchool: applicantData.highSchool,
                 title: submission.title,
                 text: submission.text,
-                issue: "Issue 4", // replace with actual issue info
+                issue: applicantData.competition, // replace with actual issue info
                 submissionType: submission.type,
                 archive: false
             }
             const response = await createSubmission(entry);
             if (response.message === "Failed to create post") {
-                console.log('cant do it')
-                toast({
-                    title: "Submission Failed",
-                    description: `Failed to submit entry: ${submission.title}`,
-                    action: (
-                      <ToastAction altText="Try Again">Undo</ToastAction>
-                    ),
-                })
+                toast.error(`Failed to submit entry: ${submission.title}`);
+                
             } else {
                 router.push('/submitted')
-                
-                toast({
-                    title: "Submission Successful",
-                    description: `Successfully submitted entry: ${submission.title}`,
-                })
+                toast.success("Successfully submitted entries!");
             }
         }
     }
@@ -185,7 +216,7 @@ export default function SubmissionPage() {
     return (
         <section className='w-full flex flex-col gap-10'>
             <section className='w-full flex flex-col gap-5'>
-                <h1 className='ft-cooper font-bold text-xl lg:text-4xl'>Active Voice Issue Submissions</h1>
+                <h1 className='ft-cooper font-bold text-xl lg:text-4xl'>Active Voice Submission Form</h1>
                 <p className='text-base'>
                     In our third issue, Active Voice is looking for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
                     <br/><br/>
@@ -193,7 +224,7 @@ export default function SubmissionPage() {
                     <br/><br/>
                     <b>Our Issue #3 reading period closes on Sunday, February 11 at 11:59 EST.</b> Please contact activevoicemag@gmail.com with any questions or concerns, or visit our FAQ page at activevoicemag.com/about.
                     <br/><br/>
-                    Interested in joining the Active Voice team? Apply <u><b><Link href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>here</Link></b></u>.
+                    Interested in joining the Active Voice team? Apply <u><b><Link target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>here</Link></b></u>.
                 </p>
             </section>
             <section className='w-full flex flex-col gap-5'>
@@ -202,12 +233,35 @@ export default function SubmissionPage() {
                     <form className='space-y-4'>
                         <FormField
                             control={applicantInfoForm.control}
+                            name="competition"
+                            render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Contest</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue {...field} placeholder="Select a contest for your submission(s)" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {contests.map((item,index)=>(
+                                            <SelectItem key={index} value={item}>{item}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={applicantInfoForm.control}
                             name="name"
                             render={({ field }) => (
                             <FormItem>
-                                <FormLabel>First Name</FormLabel>
+                                <FormLabel>First and Last Name</FormLabel>
                                 <FormControl>
-                                    <Input required {...field} placeholder='Enter your first name'/>
+                                    <Input required {...field} placeholder='Enter your first and last name'/>
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -276,7 +330,7 @@ export default function SubmissionPage() {
             <section className='w-full flex flex-col gap-8'>
                 <h1 className='ft-cooper font-bold text-lg lg:text-3xl'>Work Submission(s)</h1>
                 <Form {...submissionForm} >
-                    <form className="space-y-20" onSubmit={()=>console.log('BOOG')}>
+                    <form className="space-y-20">
                         {fields.map((submission,index)=>(
                             <fieldset key={submission.id} className='relative space-y-4'>
                                 <FormField
@@ -343,11 +397,14 @@ export default function SubmissionPage() {
                         <br/>
                         
                         <Button onClick={handleAddSubmission} variant='secondary' type='button'>Add another entry</Button>
-                    
+
                     </form>
                 </Form>
             </section> 
 
+            
+            <Toaster/>
+            
             <Button onClick={onSubmit} type="button">Submit</Button> 
         </section>
     )

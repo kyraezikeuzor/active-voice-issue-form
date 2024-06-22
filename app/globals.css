@@ -7,8 +7,14 @@
     src: url("/fonts/CooperLtBT-Regular.ttf");
   }
 
+  @font-face{
+    font-family: "Georgia";
+    src: url("/fonts/GeorgiaPro-CondRegular.ttf")
+  }
+
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
   
+
 
   .ft-cooper {
     font-family: "Cooper", serif;
@@ -24,6 +30,13 @@
   .ft-garamond {
     font-family: "EB Garamond", serif;
     font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  .ft-georgia {
+    font-family: "Georgia", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
     font-style: normal;
   }
   
