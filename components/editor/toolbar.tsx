@@ -8,6 +8,8 @@ import {
     List,
     ListOrdered,
     Heading2,
+    AlignRight,
+    AlignLeft
 } from 'lucide-react'
 import {Toggle} from "../ui/toggle"
 type Props = {
@@ -61,6 +63,27 @@ export default function Toolbar({editor}:Props) {
             >
                <Strikethrough className='h-4 w-4' />
             </Toggle>
+
+           {/*} <Toggle
+            size="sm"
+            pressed={editor.isActive("bulletList")}
+            onPressedChange={()=>
+                editor.chain().focus().toggleBulletList().run()
+            }
+            >
+               <AlignLeft className='h-4 w-4' />
+            </Toggle>
+
+            <Toggle
+            size="sm"
+            pressed={editor.isActive("bulletList")}
+            onPressedChange={()=>
+                editor.commands.setTextAlign('right')
+            }
+            >
+               <AlignRight className='h-4 w-4' />
+            </Toggle>
+            */}
             
             <Toggle
             size="sm"

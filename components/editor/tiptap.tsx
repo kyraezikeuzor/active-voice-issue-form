@@ -6,6 +6,7 @@ import Toolbar from './toolbar'
 import Heading from '@tiptap/extension-heading'
 import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
+import TextAlign from '@tiptap/extension-text-align'
 
 type TipTapProps = {
     initialValue: string;
@@ -33,7 +34,7 @@ const Tiptap = ({initialValue,onChange}:TipTapProps) => {
       HTMLAttributes: { 
         class: "list-decimal ml-5" 
       }
-    })
+    }),
     ],
     content: initialValue,
     editorProps: {
@@ -64,7 +65,7 @@ const Tiptap = ({initialValue,onChange}:TipTapProps) => {
     <div className='flex flex-col justify-stretch'>
       <Toolbar editor={editor}/>
       
-    <EditorContent  editor={editor} />
+      <EditorContent  editor={editor} />
 
     </div>
   );
