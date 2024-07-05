@@ -1,0 +1,41 @@
+.circle-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust as needed */
+    width: 100%; /* Adjust as needed */
+    padding: 2.5rem 2.5rem;
+  }
+  
+.circle {
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+  border: 3px solid var(--clr-grey-light); /* Adjust color and thickness as needed */
+  border-radius: 50%; /* Makes it a circle */
+  border-top-color: var(--clr-blue-base); /* Adjust color as needed */
+  animation: spin 1s infinite linear; /* Animation */
+}
+
+
+.circle-loader-sm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Adjust as needed */
+  width: fit-content; /* Adjust as needed */
+  padding: 0;
+}
+
+.circle-sm {
+  width:15px;
+  height:15px;
+  border: 2px solid var(--clr-grey-light); /* Adjust color and thickness as needed */
+  border-radius: 50%; /* Makes it a circle */
+  border-top-color: var(--clr-blue-base); /* Adjust color as needed */
+  animation: spin 1s infinite linear; /* Animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
