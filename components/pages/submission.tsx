@@ -249,10 +249,10 @@ export default function SubmissionPage() {
     return (
         <section className='w-full flex flex-col gap-10'>
             
-            {issueStatus?.thisIssue != null && issueStatus.status === 'open' &&
+            {issueStatus?.status === 'open' && issueStatusLoading == false &&
                 // ISSUE OPEN
                 <section className='w-full flex flex-col gap-3'>
-                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[42px]'>{issueStatus?.thisIssue?.title} Submissions Open</h1>
+                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[48px]'>{issueStatus?.thisIssue?.title} Submissions Open</h1>
                     <p className='text-base'>
                         In {issueStatus?.thisIssue?.title}, Active Voice is looking for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
                         <br/><br/>
@@ -265,9 +265,9 @@ export default function SubmissionPage() {
                 </section>
             }   
 
-            {issueStatus?.thisIssue != null && issueStatus.status === 'closed' &&
+            {issueStatus?.status === 'closed' && issueStatusLoading == false &&
                 <section className='w-full flex flex-col gap-3'>
-                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[42px]'>{issueStatus?.thisIssue?.title} Submissions Closed</h1>
+                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[48px]'>{issueStatus?.thisIssue?.title} Submissions Closed</h1>
                     <p className='text-base'>
                         <b>Our {issueStatus?.thisIssue?.title} reading period closed {formatTimestamp(issueStatus?.thisIssue?.endDate)}.</b> 
                         <br/>
@@ -284,22 +284,22 @@ export default function SubmissionPage() {
                 </section>
             }
 
-            {issueStatusLoading == true && issueStatus == null &&
-            <div>
+            {issueStatusLoading == true &&
+            <div className='w-[300px] h-[300px] bg-red-400'>
                 <Loader/>
             </div>
             }
 
-            {issueStatusLoading == false && issueStatus?.thisIssue == null &&
+            {issueStatus?.thisIssue == null && 
                 // ISSUE CLOSED
                 <section className='hidden w-full flex flex-col gap-3'>
-                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[42px]'>Closed for Submissions</h1>
+                    <h1 className='ft-cooper font-bold text-4xl 2xl:text-[48px]'>Closed for Submissions</h1>
                     <p className='text-base'>
-                        In our third issue, Active Voice is looking for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
+                        Active Voice looks for submissions related to any and all social justice and political issues (gun reform, reproductive justice, climate change & the environment, race & identity, etc.)! We welcome all writing and art—both old and new.
                         <br/><br/>
                         We will consider a maximum of three (3) pieces per person. Simultaneous submissions, as well as pieces that have been published elsewhere, are accepted. Though we would love to share as many youth voices as possible, please note that publication in Active Voice is a selective process (this should not stop you from submitting!).
                         <br/><br/>
-                        <b>Our Issue #3 reading period closes on Sunday, February 11 at 11:59 EST.</b> Please contact activevoicemag@gmail.com with any questions or concerns, or visit our FAQ page at activevoicemag.com/about.
+                         Please contact activevoicemag@gmail.com with any questions or concerns, or visit our FAQ page at activevoicemag.com/about.
                         <br/><br/>
                         Interested in joining the Active Voice team? Apply <u><b><Link target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLScmyUHB6FThu_z2s1lcjAys4QY1jxzrRthjYicdYk5ROqZG3A/viewform'>here</Link></b></u>.
                     </p>
@@ -464,14 +464,15 @@ export default function SubmissionPage() {
                                     Add Submission
                                 </Button>
                             </div>
+
                             {formSubmitting == false ? 
-                            <Button type='submit'>
-                                Submit
-                            </Button> :
-                            <Button disabled type='submit'>
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                Form submitting...
-                            </Button> 
+                                <Button type='submit'>
+                                    Submit
+                                </Button> :
+                                <Button disabled type='submit'>
+                                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                    Submitting form...
+                                </Button> 
                             }
                         </form>
                     </Form>

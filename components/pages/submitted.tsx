@@ -18,7 +18,7 @@ export default function SubmittedPage() {
     useEffect(() => {
         const confettiSettings = {
             particleCount: 100,
-            spread: 70,
+            spread: 150,
             origin: { y: 0.6 }
           };
       
@@ -32,7 +32,7 @@ export default function SubmittedPage() {
           return () => {
             Confetti.reset();
           };
-    },[]);
+    },[issueStatus]);
 
     useEffect(()=>{
         const handleGetIssueUpdate = async () => {
@@ -42,7 +42,7 @@ export default function SubmittedPage() {
             }
         }
         handleGetIssueUpdate()
-    })
+    },[])
 
     return (
         <section className='flex flex-col py-[5vh]'>
